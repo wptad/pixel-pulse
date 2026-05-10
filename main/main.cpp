@@ -39,10 +39,34 @@ static inline void pinMode(int pin, int mode) {
 }
 
 static inline int digitalRead(int pin) {
-    return gpio_get_level((gpio_num_t)pin);
+    static int last_btn_state[48];
+    static bool initialized = false;
+    if (!initialized) {
+        for (int i = 0; i < 48; i++) last_btn_state[i] = 1; // Default HIGH (Pull-up)
+        initialized = true;
+    }
+
+    int current = gpio_get_level((gpio_num_t)pin);
+
+    if (pin >= 0 && pin < 48) {
+        // Detect falling edge (1 -> 0) for active-low buttons
+        if (last_btn_state[pin] == 1 && current == 0) {
+            const char* btn_name = "UNKNOWN";
+            if (pin == 20) btn_name = "BTN_RED";
+            else if (pin == 21) btn_name = "BTN_YELLOW";
+            else if (pin == 10) btn_name = "BTN_BLUE";
+            else if (pin == 7)  btn_name = "BTN_MODE";
+            printf(">>> DEBUG: BUTTON PRESSED - PIN %d (%s)\n", pin, btn_name);
+        }
+        last_btn_state[pin] = current;
+    }
+    return current;
 }
 
 static inline void digitalWrite(int pin, int level) {
+    if (pin == 6 && level == 1) { // 6 is BEEP_PIN, 1 is HIGH
+        printf(">>> DEBUG: SPEAKER ON - PIN %d\n", pin);
+    }
     gpio_set_level((gpio_num_t)pin, level);
 }
 
@@ -187,8 +211,8 @@ void showFirework();
 // ==========================================
 
 // --- 引脚定义 (终极纯净版：已跳过 GPIO 9 和 8 避开一切干扰) ---
-#define BTN_RED     21  // 右侧最顶部
-#define BTN_YELLOW  20
+#define BTN_RED     20
+#define BTN_YELLOW  21
 #define BTN_BLUE    10
 #define BTN_MODE    7   // 避开了 GPIO 8 (板载蓝灯)
 #define BEEP_PIN    6
