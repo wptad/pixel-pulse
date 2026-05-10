@@ -1,0 +1,19 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.extensionActivationMode": "always",
+  "clangd.path": "/Users/tad/.espressif/tools/esp-clang/esp-20.1.1_20250829/esp-clang/bin/clangd",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=/Users/tad/workspace/pixel-pulse/build"
+  ],
+  "idf.currentSetup": "/Users/tad/.espressif/v6.0.1/esp-idf",
+  "idf.flashType": "UART",
+  "idf.port": "/dev/tty.usbmodem1101",
+  "idf.openOcdConfigs": [
+    "board/esp32c3-builtin.cfg"
+  ],
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32c3"
+  }
+}
