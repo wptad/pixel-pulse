@@ -299,9 +299,9 @@ void runGameMode() {
     strip.show();
     // 当 D5(MODE) 被按下时，忽略难度选择，避免与模式切换冲突
     if (digitalRead(BTN_MODE) == LOW) return;
-    if (digitalRead(BTN_RED) == LOW)    { speedInc = 0.05f; startGame(); }
-    if (digitalRead(BTN_YELLOW) == LOW) { speedInc = 0.12f; startGame(); }
-    if (digitalRead(BTN_BLUE) == LOW)   { speedInc = 0.22f; startGame(); }
+    if (digitalRead(BTN_RED) == LOW)    { currentSpeed = 0.5f; speedInc = 0.1f;  startGame(); }
+    if (digitalRead(BTN_YELLOW) == LOW) { currentSpeed = 1.0f; speedInc = 0.25f; startGame(); }
+    if (digitalRead(BTN_BLUE) == LOW)   { currentSpeed = 1.6f; speedInc = 0.5f;  startGame(); }
   } else {
     if (!enemyActive) spawnEnemy();
     if (!playerActive) checkFire();
@@ -348,7 +348,7 @@ void renderGame() {
   strip.show();
 }
 
-void startGame() { inGame = true; health = 3; score = 0; currentSpeed = 0.4f; enemyActive = playerActive = false; beep(100); }
+void startGame() { inGame = true; health = 3; score = 0; enemyActive = playerActive = false; beep(100); }
 
 // --- 台灯模式模块 ---
 void runLampMode() {
